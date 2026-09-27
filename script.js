@@ -1,132 +1,133 @@
-* {
-    box-sizing: border-box;
-}
+const form = document.getElementById("enrollmentForm");
+const course = document.getElementById("course");
+const majorBox = document.getElementById("majorBox");
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 30px;
-}
+course.addEventListener("change", function() {
+    if (course.value === "BSIT") {
+        majorBox.style.display = "block";
+    } else {
+        majorBox.style.display = "none";
+        document.getElementById("major").value = "";
+    }
+});
 
-.container {
-    width: 100%;
-    max-width: 1000px;
-    margin: auto;
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px #ccc;
-}
+form.addEventListener("submit", function(event) {
 
-h1 {
-    text-align: center;
-    margin-bottom: 30px;
-}
+    event.preventDefault();
 
-h2 {
-    text-align: center;
-    margin-top: 35px;
-}
+    let valid = true;
 
-.form-row {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 10px;
-}
+    const studentId = document.getElementById("studentId").value.trim();
+    const prefix = document.getElementById("prefix").value.trim();
+    const firstName = document.getElementById("firstName").value.trim();
+    const middleName = document.getElementById("middleName").value.trim();
+    const lastName = document.getElementById("lastName").value.trim();
+    const suffix = document.getElementById("suffix").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const major = document.getElementById("major").value;
+    const yearLevel = document.getElementById("yearLevel").value;
 
-.form-group {
-    flex: 1;
-}
+    document.querySelectorAll("small").forEach(function(error) {
+        error.textContent = "";
+    });
 
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-input,
-select {
-    width: 100%;
-    height: 40px;
-    padding: 8px 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-small {
-    display: block;
-    min-height: 18px;
-    color: red;
-    font-size: 12px;
-}
-
-button {
-    width: 100%;
-    height: 45px;
-    margin-top: 10px;
-    background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #555;
-}
-
-#successMessage {
-    text-align: center;
-    color: green;
-    font-weight: bold;
-}
-
-#majorBox {
-    display: none;
-}
-
-.table-container {
-    width: 100%;
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-th,
-td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-}
-
-th {
-    background-color: #333;
-    color: white;
-}
-
-@media (max-width: 700px) {
-
-    body {
-        padding: 10px;
+    if (studentId.length < 5) {
+        document.getElementById("studentIdError").textContent =
+            "Student ID must be at least 5 characters.";
+        valid = false;
     }
 
-    .container {
-        padding: 20px;
+    if (prefix !== "" && prefix.length < 2) {
+        document.getElementById("prefixError").textContent =
+            "Prefix must be at least 2 characters.";
+        valid = false;
     }
 
-    .form-row {
-        flex-direction: column;
-        gap: 0;
+    if (firstName.length < 3) {
+        document.getElementById("firstNameError").textContent =
+            "First name must be at least 3 characters.";
+        valid = false;
     }
 
-    .form-group {
-        width: 100%;
+    if (middleName !== "" && middleName.length < 2) {
+        document.getElementById("middleNameError").textContent =
+            "Middle name must be at least 2 characters.";
+        valid = false;
     }
-}
+
+    if (lastName.length < 2) {
+        document.getElementById("lastNameError").textContent =
+            "Last name must be at least 2 characters.";
+        valid = false;
+    }
+
+    if (suffix !== "" && suffix.length < 2) {
+        document.getElementById("suffixError").textContent =
+            "Suffix must be at least 2 characters.";
+        valid = false;
+    }
+
+    if (email === "" || !email.includes("@")) {
+        document.getElementById("emailError").textContent =
+            "Please enter a valid email.";
+        valid = false;
+    }
+
+    if (course.value === "") {
+        document.getElementById("courseError").textContent =
+            "Please select a course.";
+        valid = false;
+    }
+
+    if (course.value === "BSIT" && major === "") {
+        document.getElementById("majorError").textContent =
+            "Please select a major.";
+        valid = false;
+    }
+
+    if (yearLevel === "") {
+        document.getElementById("yearError").textContent =
+            "Please select a year level.";
+        valid = false;
+    }
+
+    if (!valid) {
+        return;
+    }
+
+    let fullName = "";
+
+    if (prefix !== "") {
+        fullName += prefix + " ";
+    }
+
+    fullName += firstName + " ";
+
+    if (middleName !== "") {
+        fullName += middleName + " ";
+    }
+
+    fullName += lastName;
+
+    if (suffix !== "") {
+        fullName += " " + suffix;
+    }
+
+    const row = document.createElement("tr");
+
+    row.innerHTML =
+        "<td>" + studentId + "</td>" +
+        "<td>" + fullName + "</td>" +
+        "<td>" + email + "</td>" +
+        "<td>" + course.value + "</td>" +
+        "<td>" + (course.value === "BSIT" ? major : "N/A") + "</td>" +
+        "<td>" + yearLevel + "</td>";
+
+    document.getElementById("tableBody").appendChild(row);
+
+    document.getElementById("successMessage").textContent =
+        "Enrollment submitted successfully!";
+
+    form.reset();
+    majorBox.style.display = "none";
+});
