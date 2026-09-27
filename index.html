@@ -1,1 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Enrollment System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
+<body>
+
+<div class="container">
+
+    <h1>Student Enrollment System</h1>
+
+    <form id="enrollmentForm">
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Student ID</label>
+                <input type="text" id="studentId">
+                <small id="studentIdError"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Prefix</label>
+                <input type="text" id="prefix">
+                <small id="prefixError"></small>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" id="firstName">
+                <small id="firstNameError"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Middle Name</label>
+                <input type="text" id="middleName">
+                <small id="middleNameError"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" id="lastName">
+                <small id="lastNameError"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Suffix</label>
+                <input type="text" id="suffix">
+                <small id="suffixError"></small>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email">
+                <small id="emailError"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Course</label>
+                <select id="course">
+                    <option value="">Select Course</option>
+                    <option value="BSIT">BSIT</option>
+                    <option value="BSCS">BSCS</option>
+                    <option value="BMMA">BMMA</option>
+                    <option value="BSAIS">BSAIS</option>
+                </select>
+                <small id="courseError"></small>
+            </div>
+        </div>
+
+        <div class="form-row">
+
+            <div class="form-group" id="majorBox">
+                <label>Major</label>
+                <select id="major">
+                    <option value="">Select Major</option>
+                    <option value="Net Sec">Net Sec</option>
+                    <option value="Web Tech">Web Tech</option>
+                    <option value="ERP">ERP</option>
+                </select>
+                <small id="majorError"></small>
+            </div>
+
+            <div class="form-group">
+                <label>Year Level</label>
+                <select id="yearLevel">
+                    <option value="">Select Year Level</option>
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                </select>
+                <small id="yearError"></small>
+            </div>
+
+        </div>
+
+        <button type="submit">Submit Enrollment</button>
+
+        <p id="successMessage"></p>
+
+    </form>
+
+    <h2>Submitted Student Data</h2>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    <th>Major</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
