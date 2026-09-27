@@ -1,0 +1,166 @@
+const form = document.getElementById("enrollmentForm");
+const course = document.getElementById("course");
+const majorBox = document.getElementById("majorBox");
+
+// Show Major only when BSIT is selected
+course.addEventListener("change", function() {
+    if (course.value === "BSIT") {
+        majorBox.style.display = "block";
+    } else {
+        majorBox.style.display = "none";
+        document.getElementById("major").value = "";
+        document.getElementById("majorError").textContent = "";
+    }
+});
+
+// Clear error when typing
+document.querySelectorAll("input, select").forEach(function(input) {
+    input.addEventListener("input", function() {
+        const error = document.getElementById(input.id + "Error");
+
+        if (error) {
+            error.textContent = "";
+        }
+    });
+
+    input.addEventListener("change", function() {
+        const error = document.getElementById(input.id + "Error");
+
+        if (error) {
+            error.textContent = "";
+        }
+    });
+});
+
+form.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    let valid = true;
+
+    const studentId = document.getElementById("studentId").value.trim();
+    const prefix = document.getElementById("prefix").value.trim();
+    const firstName = document.getElementById("firstName").value.trim();
+    const middleName = document.getElementById("middleName").value.trim();
+    const lastName = document.getElementById("lastName").value.trim();
+    const suffix = document.getElementById("suffix").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const major = document.getElementById("major").value;
+    const yearLevel = document.getElementById("yearLevel").value;
+
+    // Student ID
+    if (studentId.length < 5) {
+        document.getElementById("studentIdError").textContent =
+            "Student ID must be at least 5 characters.";
+        valid = false;
+    }
+
+    // Prefix - optional
+    if (prefix !== "" && prefix.length < 2) {
+        document.getElementById("prefixError").textContent =
+            "Prefix must be at least 2 characters.";
+        valid = false;
+    }
+
+    // First Name
+    if (firstName.length < 3) {
+        document.getElementById("firstNameError").textContent =
+            "First name must be at least 3 characters.";
+        valid = false;
+    }
+
+    // Middle Name - optional
+    if (middleName !== "" && middleName.length < 2) {
+        document.getElementById("middleNameError").textContent =
+            "Middle name must be at least 2 characters.";
+        valid = false;
+    }
+
+    // Last Name
+    if (lastName.length < 2) {
+        document.getElementById("lastNameError").textContent =
+            "Last name must be at least 2 characters.";
+        valid = false;
+    }
+
+    // Suffix - optional
+    if (suffix !== "" && suffix.length < 2) {
+        document.getElementById("suffixError").textContent =
+            "Suffix must be at least 2 characters.";
+        valid = false;
+    }
+
+    // Email
+    if (email === "" || !email.includes("@")) {
+        document.getElementById("emailError").textContent =
+            "Please enter a valid email.";
+        valid = false;
+    }
+
+    // Course
+    if (course.value === "") {
+        document.getElementById("courseError").textContent =
+            "Please select a course.";
+        valid = false;
+    }
+
+    // Major
+    if (course.value === "BSIT" && major === "") {
+        document.getElementById("majorError").textContent =
+            "Please select a major.";
+        valid = false;
+    }
+
+    // Year Level
+    if (yearLevel === "") {
+        document.getElementById("yearError").textContent =
+            "Please select a year level.";
+        valid = false;
+    }
+
+    // Stop if there are errors
+    if (!valid) {
+        return;
+    }
+
+    // Show success message
+    document.getElementById("successMessage").textContent =
+        "Enrollment submitted successfully!";
+
+    // Add data to table
+    const tableBody = document.getElementById("tableBody");
+    const row = document.createElement("tr");
+
+    let fullName = "";
+
+    if (prefix !== "") {
+        fullName += prefix + " ";
+    }
+
+    fullName += firstName + " ";
+
+    if (middleName !== "") {
+        fullName += middleName + " ";
+    }
+
+    fullName += lastName;
+
+    if (suffix !== "") {
+        fullName += " " + suffix;
+    }
+
+    row.innerHTML = `
+        <td>${studentId}</td>
+        <td>${fullName}</td>
+        <td>${email}</td>
+        <td>${course.value}</td>
+        <td>${course.value === "BSIT" ? major : "N/A"}</td>
+        <td>${yearLevel}</td>
+    `;
+
+    tableBody.appendChild(row);
+
+    // Clear form
+    form.reset();
+    majorBox.style.display = "none";
+});
